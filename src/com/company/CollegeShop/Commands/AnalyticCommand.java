@@ -4,6 +4,7 @@ import com.company.CollegeShop.Helpers.CommandHelper;
 import com.company.CollegeShop.Models.Struk;
 import com.company.CollegeShop.Models.Transaksi;
 import com.company.CollegeShop.Services.StrukService;
+import com.company.CollegeShop.Services.TransaksiService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ public class AnalyticCommand {
             Date tanggalAwal = commandArgs.length > 0 ? simpleDateFormat.parse(commandArgs[0]) : null;
             Date tanggalAkhir = commandArgs.length > 1 ? simpleDateFormat.parse(commandArgs[1]) : null;
 
-            List<Struk> listStruk = StrukService.getStrukByTanggal(tanggalAwal, tanggalAkhir);
+            List<Struk> listStruk = StrukService.getListStrukByTanggal(tanggalAwal, tanggalAkhir);
 
             if (listStruk.size() > 0) {
                 String printFormat = "| %-20s | %-20s | %20s | %20s | %20s |%n";
@@ -76,9 +77,29 @@ public class AnalyticCommand {
 
     public void BestProduct() {
 
-        // parse args
-        String[] commandArgs = _command.getCommandArgs();
-        String tanggalAwal = commandArgs.length > 0 ? commandArgs[0] : null;
-        String tanggalAkhir = commandArgs.length > 1 ? commandArgs[1] : null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+
+        try {
+            // parse args
+            String[] commandArgs = _command.getCommandArgs();
+            Date tanggalAwal = commandArgs.length > 0 ? simpleDateFormat.parse(commandArgs[0]) : null;
+            Date tanggalAkhir = commandArgs.length > 1 ? simpleDateFormat.parse(commandArgs[1]) : null;
+
+            // menampilkan top 5 barang yang paling laris
+            Map<String, List<Transaksi>> mapTransaksi = TransaksiService.getBestProductByTanggal(tanggalAwal, tanggalAkhir);
+
+            if (!mapTransaksi.isEmpty() ) {
+                String printFormat = "| %-20s | %20s |%n";
+                System.out.format(printFormat, "ID Produk", "Total Produk");
+                for (Map.Entry<String, List<Transaksi>> entry : mapTransaksi.entrySet()) {
+                    System.out.format(printFormat, entry.getKey(), entry.getValue().stream().mapToInt(t -> t.jumlahBarang).sum());
+                }
+            }
+            else {
+                System.out.println("Tidak ada best product.");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -20,7 +20,7 @@ public class StrukService {
         DataHelper.appendCsv(struk, _filePath);
     }
 
-    public static List<Struk> getStrukByTanggal(Date tanggalAwal, Date tanggalAkhir) {
+    public static List<Struk> getListStrukByTanggal(Date tanggalAwal, Date tanggalAkhir) {
 
         // get list struk
         List<Struk> listStruk = DataHelper.readCSV(Struk.class, _filePath);
@@ -43,7 +43,7 @@ public class StrukService {
     public static Map<Date, List<Struk>> getPeakByTanggal(Date tanggalAwal, Date tanggalAkhir) {
 
         // get list struk by  tanggal
-        List<Struk> listStruk = StrukService.getStrukByTanggal(tanggalAwal, tanggalAkhir);
+        List<Struk> listStruk = StrukService.getListStrukByTanggal(tanggalAwal, tanggalAkhir);
 
         // group by tanggal
         Map<Date, List<Struk>> listStrukGrouped = listStruk.stream().collect(Collectors.groupingBy(g -> g.tanggalPembuatanStruk));

@@ -18,6 +18,8 @@ public class Transaksi {
     @CsvBindByName(column = "subtotal")
     public Integer subtotal;
 
+    public Struk struk;
+
     public Barang barang;
 
     public Transaksi() {
