@@ -1,15 +1,31 @@
 package com.company.CollegeShop.Models;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Struk {
+
+    public static String header = "ID_struk,tanggal_pembuatan_struk,total_pembelian,total_pembayaran,kembalian";
+
+    @CsvBindByName(column = "ID_struk")
     public String id;
+
+    @CsvDate(value = "dd/MM/yyyy")
+    @CsvBindByName(column = "tanggal_pembuatan_struk")
     public Date tanggalPembuatanStruk;
+
+    @CsvBindByName(column = "total_pembelian")
     public Integer totalPembelian;
+
+    @CsvBindByName(column = "total_pembayaran")
     public Integer totalpembayaran;
+
+    @CsvBindByName(column = "kembalian")
     public Integer kembalian;
 
     public List<Transaksi> transaksiList;
@@ -23,6 +39,13 @@ public class Struk {
         totalpembayaran = 0;
         kembalian = 0;
         transaksiList = new LinkedList<>();
+    }
+
+    @Override
+    public String toString() {
+        String pattern = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return id + "," + simpleDateFormat.format(tanggalPembuatanStruk) + "," + totalPembelian + "," + totalpembayaran + "," + kembalian;
     }
 
     public void insertTransaksi(Barang barang, Integer jumlahBarang) {

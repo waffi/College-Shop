@@ -3,6 +3,12 @@ package com.company.CollegeShop;
 import com.company.CollegeShop.Commands.AnalyticCommand;
 import com.company.CollegeShop.Commands.StrukCommand;
 import com.company.CollegeShop.Helpers.CommandHelper;
+import com.company.CollegeShop.Helpers.DataHelper;
+import com.company.CollegeShop.Models.Barang;
+import com.company.CollegeShop.Models.Struk;
+import com.company.CollegeShop.Models.Transaksi;
+
+import java.util.List;
 
 public class Main {
 
@@ -91,13 +97,26 @@ public class Main {
                         break;
                 }
             }
-            catch (Exception exception) {
+            catch (Exception e) {
                 message = "Error!";
+                e.printStackTrace();
             }
 
             System.out.println(message);
         }
 
         command.close();
+
+        List<Barang> listBarang = DataHelper.readCSV(Barang.class, "D:\\Github\\College Shop\\csv\\T_BRG.csv");
+        DataHelper.writeCsv(Barang.header, listBarang, "D:\\Github\\College Shop\\csv\\T_BRG_Copy.csv");
+        DataHelper.appendCsv(listBarang.get(0), "D:\\Github\\College Shop\\csv\\T_BRG_Copy.csv");
+
+        List<Struk> listStruk = DataHelper.readCSV(Struk.class, "D:\\Github\\College Shop\\csv\\T_STRUK.csv");
+        DataHelper.writeCsv(Struk.header, listStruk, "D:\\Github\\College Shop\\csv\\T_STRUK_Copy.csv");
+        DataHelper.appendCsv(listStruk.get(0), "D:\\Github\\College Shop\\csv\\T_STRUK_Copy.csv");
+
+        List<Transaksi> listTransaksi = DataHelper.readCSV(Transaksi.class, "D:\\Github\\College Shop\\csv\\T_TRANS.csv");
+        DataHelper.writeCsv(Transaksi.header, listTransaksi, "D:\\Github\\College Shop\\csv\\T_TRANS_Copy.csv");
+        DataHelper.appendCsv(listTransaksi.get(0), "D:\\Github\\College Shop\\csv\\T_TRANS_Copy.csv");
     }
 }
