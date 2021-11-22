@@ -4,9 +4,13 @@ import com.company.CollegeShop.Helpers.DataHelper;
 import com.company.CollegeShop.Models.Struk;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.toMap;
 
 public class StrukService {
 
@@ -34,5 +38,27 @@ public class StrukService {
         }
 
         return listStruk;
+    }
+
+    public static Map<Date, List<Struk>> getPeakByTanggal(Date tanggalAwal, Date tanggalAkhir) {
+
+        // get list struk by  tanggal
+        List<Struk> listStruk = StrukService.getStrukByTanggal(tanggalAwal, tanggalAkhir);
+
+        // group by tanggal
+        Map<Date, List<Struk>> listStrukGrouped = listStruk.stream().collect(Collectors.groupingBy(g -> g.tanggalPembuatanStruk));
+
+        // order by size https://stackoverflow.com/questions/30853117/how-can-i-sort-a-map-based-upon-on-the-size-of-its-collection-values
+        listStrukGrouped = listStrukGrouped.entrySet().stream()
+                .sorted(comparingInt(e -> ((Map.Entry<Date, List<Struk>>)e).getValue().size()).reversed())
+                .limit(10)
+                .collect(toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> { throw new AssertionError(); },
+                        LinkedHashMap::new
+                ));
+
+        return listStrukGrouped;
     }
 }
