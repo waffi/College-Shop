@@ -21,14 +21,14 @@ public class Main {
 
 //        sample analytic command
 //        - DISPLAY_STRUK
-//        - DISPLAY_STRUK 1-Agustus-2020 10-Agustus-2020
-//        - DISPLAY_STRUK 1-Agustus-2020
+//        - DISPLAY_STRUK 1-August-2020 10-August-2020
+//        - DISPLAY_STRUK 1-August-2020
 //        - DISPLAY_PEAK
-//        - DISPLAY_PEAK 1-Agustus-2020 10-Agustus-2020
-//        - DISPLAY_PEAK 1-Agustus-2020
+//        - DISPLAY_PEAK 1-August-2020 10-August-2020
+//        - DISPLAY_PEAK 1-August-2020
 //        - BEST_PRODUCT
-//        - BEST_PRODUCT 1-Agustus-2020 10-Agustus-2020
-//        - BEST_PRODUCT 1-Agustus-2020
+//        - BEST_PRODUCT 1-August-2020 10-August-2020
+//        - BEST_PRODUCT 1-August-2020
 
     public static void main(String[] args) {
 
