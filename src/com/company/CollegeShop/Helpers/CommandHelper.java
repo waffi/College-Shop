@@ -29,20 +29,6 @@ public class CommandHelper {
         return _commandArgs;
     }
 
-    public Boolean checkArgs(String[] requiredArgs){
-        if (_commandArgs.length != requiredArgs.length) {
-
-            String commandFormat = _commandName;
-            if (requiredArgs.length > 0){
-                commandFormat +="<spasi>" + "<" + String.join("><spasi><", requiredArgs) + ">";
-            }
-
-            System.out.println("Check the command format: " + commandFormat);
-            return false;
-        }
-        return true;
-    }
-
     public void close() {
         _scanner.close();
     }

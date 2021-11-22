@@ -4,12 +4,12 @@ import com.opencsv.bean.CsvBindByName;
 
 public class Transaksi {
 
-    public static String header = "ID_barang,ID_struk,jumlah_barang,subtotal";
-
-    @CsvBindByName(column = "ID_barang")
-    public String idStruk;
+    public static String header = "ID_struk,ID_barang,jumlah_barang,subtotal";
 
     @CsvBindByName(column = "ID_struk")
+    public String idStruk;
+
+    @CsvBindByName(column = "ID_barang")
     public String idBarang;
 
     @CsvBindByName(column = "jumlah_barang")
