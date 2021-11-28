@@ -46,11 +46,18 @@ public class StrukService {
         List<Struk> listStruk = StrukService.getListStrukByTanggal(tanggalAwal, tanggalAkhir);
 
         // group by tanggal
+        // {22-November-2021 : [{},{},{},{}]} type per item: Map.Entry<Date, List<Struk>>
+        // {23-November-2021 : [{},{}]}
+        // {24-November-2021 : [{},{},{}]}
         Map<Date, List<Struk>> listStrukGrouped = listStruk.stream().collect(Collectors.groupingBy(g -> g.tanggalPembuatanStruk));
 
         // order by size https://stackoverflow.com/questions/30853117/how-can-i-sort-a-map-based-upon-on-the-size-of-its-collection-values
         listStrukGrouped = listStrukGrouped.entrySet().stream()
-                .sorted(comparingInt(e -> ((Map.Entry<Date, List<Struk>>)e).getValue().size()).reversed())
+                .sorted(
+                        comparingInt(
+                            e -> ((Map.Entry<Date, List<Struk>>)e).getValue().size()
+                        ).reversed()
+                )
                 .limit(10)
                 .collect(toMap(
                         Map.Entry::getKey,

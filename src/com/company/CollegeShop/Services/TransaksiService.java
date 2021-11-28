@@ -32,7 +32,7 @@ public class TransaksiService {
         List<Struk> listStruk = StrukService.getListStrukByTanggal(tanggalAwal, tanggalAkhir);
         List<Transaksi> listTransaksi = TransaksiService.getListTransaksi();
 
-        // join transaksi & struk
+        // join transaksi & struk (mengisi object stuck pada tiap transakasi)
         for (Transaksi transaksi: listTransaksi) {
             // find first struk by id
             Optional<Struk> struk = listStruk.stream().filter(p -> p.id.equals(transaksi.idStruk)).findFirst();
@@ -45,11 +45,18 @@ public class TransaksiService {
         listTransaksi = listTransaksi.stream().filter(p -> p.struk != null).collect(Collectors.toList());
 
         // group by idBarang
+        // {PEPSO : [{},{},{},{}]} type per item: Map.Entry<Date, List<Struk>>
+        // {AQUA : [{},{}]}
+        // {MIE : [{},{},{}]}
         Map<String, List<Transaksi>> listTransaksiGrouped = listTransaksi.stream().collect(Collectors.groupingBy(g -> g.idBarang));
 
         // order by size https://stackoverflow.com/questions/30853117/how-can-i-sort-a-map-based-upon-on-the-size-of-its-collection-values
         listTransaksiGrouped = listTransaksiGrouped.entrySet().stream()
-                .sorted(comparingInt(e -> ((Map.Entry<String, List<Transaksi>>)e).getValue().stream().mapToInt(t -> t.jumlahBarang).sum()).reversed())
+                .sorted(
+                        comparingInt(
+                                e -> ((Map.Entry<String, List<Transaksi>>)e).getValue().stream().mapToInt(t -> t.jumlahBarang).sum()
+                        ).reversed()
+                )
                 .limit(5)
                 .collect(toMap(
                         Map.Entry::getKey,
