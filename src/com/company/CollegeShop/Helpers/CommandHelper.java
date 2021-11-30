@@ -34,7 +34,7 @@ public class CommandHelper {
     private String[] translateCommandline(String toProcess) {
         if (toProcess != null && toProcess.length() != 0) {
             int state = 0;
-            StringTokenizer tok = new StringTokenizer(toProcess, " ", true);
+            final StringTokenizer tok = new StringTokenizer(toProcess, "\"\' ", true);
             Vector v = new Vector();
             StringBuffer current = new StringBuffer();
             boolean lastTokenHasBeenQuoted = false;
@@ -66,7 +66,11 @@ public class CommandHelper {
                     } else if ("\"".equals(nextTok)) {
                         state = 2;
                     } else if (" ".equals(nextTok)) {
-                        if (lastTokenHasBeenQuoted || current.length() != 0) {
+                        if (lastTokenHasBeenQuoted) {
+                            v.addElement("\"" + current.toString() + "\"");
+                            current = new StringBuffer();
+                        }
+                        else if (current.length() != 0) {
                             v.addElement(current.toString());
                             current = new StringBuffer();
                         }
